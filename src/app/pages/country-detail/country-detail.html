@@ -1,0 +1,46 @@
+@if (loading) {
+  <p>Loading country details...</p>
+} @else if (errorMessage) {
+  <p class="error-message">{{ errorMessage }}</p>
+} @else if (country) {
+  <a class="back-link" routerLink="/">← Back to countries</a>
+
+ 
+
+  <section class="detail-card">
+    <img [src]="country.flags.svg || country.flags.png" [alt]="country.name.common" />
+
+    <div class="detail-content">
+      <h1>{{ country.name.common }}</h1>
+      <p><strong>Official name:</strong> {{ country.name.official }}</p>
+      <p><strong>Capital:</strong> {{ capital }}</p>
+      <p><strong>Region:</strong> {{ country.region }}</p>
+      <p><strong>Subregion:</strong> {{ country.subregion || 'N/A' }}</p>
+      <p><strong>Population:</strong> {{ country.population | number }}</p>
+      <p><strong>Languages:</strong> {{ languages }}</p>
+      <p><strong>Currencies:</strong> {{ currencies }}</p>
+
+      @if (country.maps?.googleMaps) {
+        <p>
+          <a [href]="country.maps?.googleMaps" target="_blank">Open in Google Maps</a>
+        </p>
+      }
+    </div>
+  </section>
+
+  <section class="borders-section">
+    <h2>Border countries</h2>
+
+    @if (borderCountries.length > 0) {
+      <div class="borders-list">
+        @for (border of borderCountries; track border.cca3) {
+          <app-border-country [country]="border"></app-border-country>
+        }
+      </div>
+    } @else {
+      <p>No bordering countries.</p>
+    }
+  </section>
+} @else {
+  <p class="error-message">No country data available.</p>
+}

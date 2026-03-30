@@ -1,0 +1,13 @@
+<section class="favorites-section">
+  <h2>Favorites</h2>
+
+  @if (favoriteCountries.length > 0) {
+    <div class="favorites-grid">
+      @for (country of favoriteCountries; track country.cca3) {
+        <app-country-card [country]="country"></app-country-card>
+      }
+    </div>
+  } @else {
+    <p>No favorite countries yet.</p>
+  }
+</section>

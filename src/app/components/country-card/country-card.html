@@ -1,0 +1,17 @@
+<p>country-card works!</p>
+<a class="country-card" [routerLink]="['/country', country.cca3]">
+  <img [src]="country.flags.png" [alt]="country.flags.alt || country.name.common" />
+
+  <div class="content">
+    <div class="top-row">
+      <h3>{{ country.name.common }}</h3>
+      <button class="fav-btn" (click)="toggleFavorite($event)">
+        {{ isFavorite() ? '★' : '☆' }}
+      </button>
+    </div>
+
+    <p><strong>Capital:</strong> {{ capital }}</p>
+    <p><strong>Region:</strong> {{ country.region }}</p>
+    <p><strong>Population:</strong> {{ country.population | number }}</p>
+  </div>
+</a>

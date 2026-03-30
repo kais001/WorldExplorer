@@ -1,0 +1,9 @@
+<div class="filter-bar">
+  <label for="region">Filter by region</label>
+  <select id="region" [(ngModel)]="selectedRegion" (change)="onRegionChange()">
+    <option value="">All regions</option>
+    @for (region of regions; track region) {
+      <option [value]="region">{{ region }}</option>
+    }
+  </select>
+</div>

@@ -1,0 +1,39 @@
+<section class="hero">
+  <div>
+    <h1>World Explorer</h1>
+    <p>Discover countries, filter by region, and save your favorites.</p>
+  </div>
+</section>
+
+<section class="toolbar">
+  <div class="search-box">
+    <label for="search">Search by country name</label>
+    <input
+      id="search"
+      type="text"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      placeholder="Search a country..."
+    />
+  </div>
+
+  <app-filter-bar (regionChange)="onRegionChanged($event)"></app-filter-bar>
+</section>
+
+@if (loading) {
+  <p class="info">Loading countries...</p>
+} @else if (errorMessage) {
+  <p class="info error">{{ errorMessage }}</p>
+} @else {
+  <p class="info">{{ filteredCountries.length }} countries found</p>
+
+  <div class="countries-grid">
+    @for (country of filteredCountries; track country.cca3) {
+      <app-country-card [country]="country"></app-country-card>
+    } @empty {
+      <p>No countries match your search.</p>
+    }
+  </div>
+
+  <app-favorites [countries]="countries"></app-favorites>
+}
