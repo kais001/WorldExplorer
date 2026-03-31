@@ -1,31 +1,63 @@
-.panel {
+.letters-shell {
+  padding: 8px 24px 0;
+}
+
+.letters-card {
+  max-width: 1280px;
+  margin: 0 auto;
   background: white;
-  margin: 20px auto;
-  border-radius: 16px;
-  max-width: 1200px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  border-radius: 22px;
+  padding: 18px 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  border: 1px solid #eef2f7;
 }
 
-.padding-20 {
-  padding: 20px;
+.letters-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 14px;
 }
 
-.nav-section {
-  margin-bottom: 12px;
+.letters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.nav-section a {
-  margin-right: 10px;
+.letter-chip {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  color: #1f2937;
-  font-weight: 600;
-}
-
-.nav-title {
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
   font-weight: 700;
-  margin-right: 10px;
+  transition: all 0.2s ease;
 }
 
-.active-link {
-  color: #1d4ed8;
+.letter-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+.letter-chip.active-letter {
+  background: #0f172a;
+  color: white;
+  border-color: #0f172a;
+}
+
+@media (max-width: 768px) {
+  .letters-shell {
+    padding: 8px 16px 0;
+  }
+
+  .letters-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
 }

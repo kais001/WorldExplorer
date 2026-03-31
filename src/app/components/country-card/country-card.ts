@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Country } from '../../models/country.model';
 import { FavoriteService } from '../../services/favorite';
 
@@ -25,8 +25,8 @@ export class CountryCardComponent {
   }
 
   toggleFavorite(event: Event): void {
-    event.stopPropagation();
     event.preventDefault();
+    event.stopPropagation();
     this.favoriteService.toggleFavorite(this.country);
   }
 }

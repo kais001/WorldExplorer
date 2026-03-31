@@ -6,16 +6,34 @@
 </section>
 
 <section class="toolbar">
-  <div class="search-box">
+  <form class="search-box" [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()">
     <label for="search">Search by country name</label>
+
     <input
       id="search"
       type="text"
-      [(ngModel)]="searchTerm"
-      (input)="onSearch()"
-      placeholder="Search a country..."
+      formControlName="search"
+      placeholder="Enter at least 3 letters..."
     />
-  </div>
+
+    @if (showMinLengthError) {
+      <p class="validation-error">Minimum 3 characters required.</p>
+    }
+
+    @if (showPatternError) {
+      <p class="validation-error">Only letters, spaces and hyphens are allowed.</p>
+    }
+
+    <div class="search-actions">
+      <button type="submit" [disabled]="searchForm.invalid">
+        Search
+      </button>
+
+      <button type="button" class="secondary-btn" (click)="onClearSearch()">
+        Clear
+      </button>
+    </div>
+  </form>
 
   <app-filter-bar (regionChange)="onRegionChanged($event)"></app-filter-bar>
 </section>
@@ -31,7 +49,7 @@
     @for (country of filteredCountries; track country.cca3) {
       <app-country-card [country]="country"></app-country-card>
     } @empty {
-      <p>No countries match your search.</p>
+      <p>No countries match your filters.</p>
     }
   </div>
 

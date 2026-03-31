@@ -10,7 +10,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavbarComponent {
   letters: string[] = [];
-  regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
 
   constructor() {
     for (let i = 65; i <= 90; i++) {

@@ -1,24 +1,16 @@
-<div class="panel padding-20">
-  <div class="row">
-    <div class="col-12">
-      <div class="nav-section">
-        <a routerLink="" routerLinkActive="active-link">All</a>
-        <a routerLink="/favorites" routerLinkActive="active-link">Favorites</a>
-      </div>
+<section class="letters-shell">
+  <div class="letters-card">
+    <div class="letters-title">Browse by letter</div>
 
-      <div class="nav-section">
-        <span class="nav-title">Regions:</span>
-        @for (region of regions; track region) {
-          <a [routerLink]="['/region', region]" routerLinkActive="active-link">{{ region }}</a>
-        }
-      </div>
-
-      <div class="nav-section">
-        <span class="nav-title">Letters:</span>
-        @for (letter of letters; track letter) {
-          <a [routerLink]="['/letter', letter]" routerLinkActive="active-link">{{ letter }}</a>
-        }
-      </div>
+    <div class="letters-grid">
+      @for (letter of letters; track letter) {
+        <a
+          [routerLink]="['/letter', letter]"
+          routerLinkActive="active-letter"
+          class="letter-chip">
+          {{ letter }}
+        </a>
+      }
     </div>
   </div>
-</div>
+</section>

@@ -1,5 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../../services/country';
 import { Country } from '../../models/country.model';
@@ -10,7 +15,12 @@ import { FavoritesComponent } from '../../components/favorites/favorites';
 @Component({
   selector: 'app-country-list',
   standalone: true,
-  imports: [FormsModule, CountryCardComponent, FilterBarComponent, FavoritesComponent],
+  imports: [
+    ReactiveFormsModule,
+    CountryCardComponent,
+    FilterBarComponent,
+    FavoritesComponent,
+  ],
   templateUrl: './country-list.html',
   styleUrl: './country-list.css',
 })
@@ -20,11 +30,22 @@ export class CountryListComponent implements OnInit {
 
   countries: Country[] = [];
   filteredCountries: Country[] = [];
-  searchTerm = '';
   selectedRegion = '';
   selectedLetter = '';
   loading = true;
   errorMessage = '';
+
+  searchCtrl = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [
+      Validators.pattern(/^[a-zA-ZÀ-ÿ\s-]*$/),
+      Validators.minLength(3),
+    ],
+  });
+
+  searchForm = new FormGroup({
+    search: this.searchCtrl,
+  });
 
   ngOnInit(): void {
     this.loadCountries();
@@ -53,7 +74,16 @@ export class CountryListComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
+  onSubmitSearch(): void {
+    if (this.searchForm.invalid) {
+      return;
+    }
+
+    this.applyFilters();
+  }
+
+  onClearSearch(): void {
+    this.searchCtrl.setValue('');
     this.applyFilters();
   }
 
@@ -63,7 +93,7 @@ export class CountryListComponent implements OnInit {
   }
 
   applyFilters(): void {
-    const search = this.searchTerm.trim().toLowerCase();
+    const search = this.searchCtrl.value.trim().toLowerCase();
 
     this.filteredCountries = this.countries.filter((country) => {
       const matchesSearch =
@@ -74,9 +104,19 @@ export class CountryListComponent implements OnInit {
 
       const matchesLetter =
         !this.selectedLetter ||
-        country.name.common.toLowerCase().startsWith(this.selectedLetter.toLowerCase());
+        country.name.common
+          .toLowerCase()
+          .startsWith(this.selectedLetter.toLowerCase());
 
       return matchesSearch && matchesRegion && matchesLetter;
     });
+  }
+
+  get showMinLengthError(): boolean {
+    return this.searchCtrl.touched && this.searchCtrl.hasError('minlength');
+  }
+
+  get showPatternError(): boolean {
+    return this.searchCtrl.touched && this.searchCtrl.hasError('pattern');
   }
 }

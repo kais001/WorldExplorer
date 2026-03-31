@@ -1,39 +1,37 @@
-<<<<<<< HEAD
-<a
-  routerLink="/"
-  routerLinkActive="active"
-  [routerLinkActiveOptions]="{ exact: true }"
->
-  Home
-</a>
-=======
-<header>
-  <div class="panel padding-10">
-    <div class="row">
-      <div class="col-2 d-flex justify-content-center">
-        <img [src]="logo" height="50px" alt="logo" />
-      </div>
-
-      <div class="col-8">
-        <div class="row">
-          <div class="col-4 d-flex justify-content-center">
-            <a routerLink="" routerLinkActive="active-link">{{ accueil | uppercase }}</a>
-          </div>
-
-          <div class="col-4 d-flex justify-content-center">
-            <a routerLink="/region/Europe" routerLinkActive="active-link">{{ europe | lowercase }}</a>
-          </div>
-
-          <div class="col-4 d-flex justify-content-center">
-            <a routerLink="/favorites" routerLinkActive="active-link">{{ favorites | titlecase }}</a>
-          </div>
+<header class="header-shell">
+  <div class="header-card">
+    <div class="top-row">
+      <div class="brand">
+        <div class="brand-badge">🌍</div>
+        <div>
+          <h1>World Explorer</h1>
+          <p>Discover countries by region and favorites</p>
         </div>
       </div>
 
-      <div class="col-2 d-flex justify-content-center">
-        <a routerLink="/about" routerLinkActive="active-link">{{ apropos | uppercase }}</a>
+      <div class="main-links">
+        <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+          All
+        </a>
+        <a routerLink="/favorites" routerLinkActive="active-link">
+          Favorites
+        </a>
+      </div>
+    </div>
+
+    <div class="regions-row">
+      <span class="regions-label">Regions</span>
+
+      <div class="regions-list">
+        @for (region of regions; track region) {
+          <a
+            class="region-pill"
+            [routerLink]="['/region', region]"
+            routerLinkActive="active-pill">
+            {{ region }}
+          </a>
+        }
       </div>
     </div>
   </div>
 </header>
->>>>>>> ff8d71179331582fc357fb9ab0ff737021841a12

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .main-footer {
   margin-top: 30px;
   padding: 18px 28px;
@@ -7,7 +6,8 @@
   border-top: 1px solid #e5e7eb;
   color: #6b7280;
   font-weight: 500;
-=======
+}
+
 .panel {
   background: white;
   margin: 20px auto;
@@ -28,5 +28,4 @@
 .f-large {
   font-size: 18px;
   margin-top: 10px;
->>>>>>> ff8d71179331582fc357fb9ab0ff737021841a12
 }

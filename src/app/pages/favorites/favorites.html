@@ -1,7 +1,17 @@
-<h1>Favorites</h1>
+<section class="favorites-page">
+  <h1>Favorites</h1>
 
-<div class="grid">
-  @for (country of favorites; track country.cca3) {
-    <app-country-card [country]="country"></app-country-card>
+  @if (loading) {
+    <p>Loading favorites...</p>
+  } @else if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  } @else if (favoriteCountries.length === 0) {
+    <p>No favorite countries yet.</p>
+  } @else {
+    <div class="favorites-grid">
+      @for (country of favoriteCountries; track country.cca3) {
+        <app-country-card [country]="country"></app-country-card>
+      }
+    </div>
   }
-</div>
+</section>

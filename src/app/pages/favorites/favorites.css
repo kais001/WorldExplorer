@@ -1,0 +1,20 @@
+.favorites-page {
+  max-width: 1280px;
+  margin: 24px auto;
+  padding: 0 24px 24px;
+}
+
+.favorites-page h1 {
+  margin-bottom: 20px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.error-message {
+  color: #b42318;
+  font-weight: 600;
+}
