@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .main-footer {
   margin-top: 30px;
   padding: 18px 28px;
@@ -6,4 +7,26 @@
   border-top: 1px solid #e5e7eb;
   color: #6b7280;
   font-weight: 500;
+=======
+.panel {
+  background: white;
+  margin: 20px auto;
+  border-radius: 16px;
+  max-width: 1200px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.padding-40 {
+  padding: 40px;
+}
+
+.f-x-large {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.f-large {
+  font-size: 18px;
+  margin-top: 10px;
+>>>>>>> ff8d71179331582fc357fb9ab0ff737021841a12
 }

@@ -1,0 +1,31 @@
+.panel {
+  background: white;
+  margin: 20px auto;
+  border-radius: 16px;
+  max-width: 1200px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.padding-20 {
+  padding: 20px;
+}
+
+.nav-section {
+  margin-bottom: 12px;
+}
+
+.nav-section a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.nav-title {
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.active-link {
+  color: #1d4ed8;
+}

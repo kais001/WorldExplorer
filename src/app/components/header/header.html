@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <a
   routerLink="/"
   routerLinkActive="active"
@@ -5,3 +6,34 @@
 >
   Home
 </a>
+=======
+<header>
+  <div class="panel padding-10">
+    <div class="row">
+      <div class="col-2 d-flex justify-content-center">
+        <img [src]="logo" height="50px" alt="logo" />
+      </div>
+
+      <div class="col-8">
+        <div class="row">
+          <div class="col-4 d-flex justify-content-center">
+            <a routerLink="" routerLinkActive="active-link">{{ accueil | uppercase }}</a>
+          </div>
+
+          <div class="col-4 d-flex justify-content-center">
+            <a routerLink="/region/Europe" routerLinkActive="active-link">{{ europe | lowercase }}</a>
+          </div>
+
+          <div class="col-4 d-flex justify-content-center">
+            <a routerLink="/favorites" routerLinkActive="active-link">{{ favorites | titlecase }}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2 d-flex justify-content-center">
+        <a routerLink="/about" routerLinkActive="active-link">{{ apropos | uppercase }}</a>
+      </div>
+    </div>
+  </div>
+</header>
+>>>>>>> ff8d71179331582fc357fb9ab0ff737021841a12
