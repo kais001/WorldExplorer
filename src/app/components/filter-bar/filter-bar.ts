@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,9 +9,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './filter-bar.css',
 })
 export class FilterBarComponent {
+  @Input() selectedRegion = '';
   @Output() regionChange = new EventEmitter<string>();
-
-  selectedRegion = '';
   regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
 
   onRegionChange(): void {

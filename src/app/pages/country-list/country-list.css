@@ -43,6 +43,12 @@
   font-size: 16px;
 }
 
+.search-helper {
+  margin: 0;
+  color: #4a5568;
+  font-size: 14px;
+}
+
 .search-actions {
   display: flex;
   gap: 10px;

@@ -1,15 +1,21 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
+import { BorderCountryComponent } from '../../components/border-country/border-country';
+import { RxjsPlaygroundComponent } from '../../components/rxjs-playground/rxjs-playground';
 import { Country } from '../../models/country.model';
 import { CountryService } from '../../services/country';
-import { BorderCountryComponent } from '../../components/border-country/border-country';
 
 @Component({
   selector: 'app-country-detail',
   standalone: true,
-  imports: [DecimalPipe, RouterLink, BorderCountryComponent],
+  imports: [
+    DecimalPipe,
+    RouterLink,
+    BorderCountryComponent,
+    RxjsPlaygroundComponent,
+  ],
   templateUrl: './country-detail.html',
   styleUrl: './country-detail.css',
 })
@@ -25,50 +31,60 @@ export class CountryDetailComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap
       .pipe(
-        switchMap((params) => {
-          const code = params.get('code') || '';
-          console.log('DETAIL CODE:', code);
-          return this.countryService.getCountryByCode(code);
+        map((params) => params.get('code') || ''),
+        switchMap((code) => {
+          this.loading = true;
+          this.errorMessage = '';
+          this.borderCountries = [];
+
+          return this.countryService.getCountryByCode(code).pipe(
+            switchMap((country) => {
+              if (!country) {
+                return of({
+                  country: undefined,
+                  borderCountries: [] as Country[],
+                  errorMessage: 'Country not found.',
+                });
+              }
+
+              const borders$ = country.borders?.length
+                ? this.countryService.getCountriesByCodes(country.borders)
+                : of([] as Country[]);
+
+              return borders$.pipe(
+                map((borderCountries) => ({
+                  country,
+                  borderCountries,
+                  errorMessage: '',
+                })),
+                catchError((err) => {
+                  console.error('BORDER ERROR:', err);
+                  return of({
+                    country,
+                    borderCountries: [] as Country[],
+                    errorMessage: '',
+                  });
+                })
+              );
+            })
+          );
         })
       )
       .subscribe({
-        next: (data) => {
-          console.log('DETAIL DATA:', data);
-
-          this.country = Array.isArray(data) ? data[0] : (data as unknown as Country);
+        next: ({ country, borderCountries, errorMessage }) => {
+          this.country = country;
+          this.borderCountries = borderCountries;
+          this.errorMessage = errorMessage;
           this.loading = false;
-
-          if (!this.country) {
-            this.errorMessage = 'Country not found.';
-            return;
-          }
-
-          this.loadBorderCountries();
         },
         error: (err) => {
           console.error('DETAIL ERROR:', err);
+          this.country = undefined;
+          this.borderCountries = [];
           this.errorMessage = 'Unable to load country details.';
           this.loading = false;
         },
       });
-  }
-
-  loadBorderCountries(): void {
-    if (!this.country?.borders?.length) {
-      this.borderCountries = [];
-      return;
-    }
-
-    this.countryService.getCountriesByCodes(this.country.borders).subscribe({
-      next: (data) => {
-        console.log('BORDER DATA:', data);
-        this.borderCountries = data;
-      },
-      error: (err) => {
-        console.error('BORDER ERROR:', err);
-        this.borderCountries = [];
-      },
-    });
   }
 
   get capital(): string {
@@ -85,7 +101,6 @@ export class CountryDetailComponent implements OnInit {
     if (!this.country?.currencies) {
       return 'N/A';
     }
-    
 
     return Object.values(this.country.currencies)
       .map(

@@ -9,7 +9,7 @@ export interface Currency {
 }
 
 export interface Country {
-  cca2: string;
+  cca2?: string;
   cca3: string;
   name: CountryName;
   capital?: string[];

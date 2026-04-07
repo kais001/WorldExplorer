@@ -2,6 +2,11 @@
   margin-top: 40px;
 }
 
+.favorites-meta {
+  margin-top: -8px;
+  color: #4a5568;
+}
+
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));

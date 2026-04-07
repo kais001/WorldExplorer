@@ -1,0 +1,23 @@
+<section class="rxjs-card">
+  <div class="rxjs-header">
+    <div>
+      <p class="eyebrow">Observable</p>
+      <h2>{{ value$ | async }}</h2>
+    </div>
+
+    <p class="stream-status" [class.running]="isRunning">
+      {{ isRunning ? 'Start' : 'Stop' }}
+    </p>
+  </div>
+
+  <div class="playground-panel">
+    <p class="big-value">{{ value$ | async }}</p>
+
+    <div class="actions">
+      <button type="button" (click)="start()" [disabled]="isRunning">Start</button>
+      <button type="button" class="secondary-btn" (click)="stop()" [disabled]="!isRunning">
+        Stop
+      </button>
+    </div>
+  </div>
+</section>

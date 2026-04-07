@@ -1,4 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { Country } from '../../models/country.model';
 import { CountryCardComponent } from '../country-card/country-card';
 import { FavoriteService } from '../../services/favorite';
@@ -6,17 +8,28 @@ import { FavoriteService } from '../../services/favorite';
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CountryCardComponent],
+  imports: [AsyncPipe, CountryCardComponent],
   templateUrl: './favorites.html',
   styleUrl: './favorites.css',
 })
 export class FavoritesComponent {
-  @Input() countries: Country[] = [];
-
+  private countriesSubject = new BehaviorSubject<Country[]>([]);
   favoriteService = inject(FavoriteService);
 
-  get favoriteCountries(): Country[] {
-    const favorites = this.favoriteService.getFavorites();
-    return this.countries.filter((country) => favorites.includes(country.cca3));
+  @Input() set countries(value: Country[]) {
+    this.countriesSubject.next(value);
   }
+
+  favoriteCount$ = this.favoriteService.favorites$.pipe(
+    map((favorites) => favorites.length)
+  );
+
+  favoriteCountries$ = combineLatest([
+    this.countriesSubject,
+    this.favoriteService.favorites$,
+  ]).pipe(
+    map(([countries, favorites]) =>
+      countries.filter((country) => favorites.includes(country.cca3))
+    )
+  );
 }

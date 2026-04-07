@@ -1,48 +1,59 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import {
+  catchError,
+  map,
+  of,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs';
+import { CountryCardComponent } from '../../components/country-card/country-card';
 import { Country } from '../../models/country.model';
 import { CountryService } from '../../services/country';
 import { FavoriteService } from '../../services/favorite';
-import { CountryCardComponent } from '../../components/country-card/country-card';
 
 @Component({
   selector: 'app-favorites-page',
   standalone: true,
-  imports: [CountryCardComponent],
+  imports: [AsyncPipe, CountryCardComponent],
   templateUrl: './favorites.html',
   styleUrl: './favorites.css',
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent {
   private countryService = inject(CountryService);
   private favoriteService = inject(FavoriteService);
 
-  favoriteCountries: Country[] = [];
-  loading = true;
-  errorMessage = '';
+  viewState$ = this.favoriteService.favorites$.pipe(
+    switchMap((favoriteCodes) => {
+      if (!favoriteCodes.length) {
+        return of({
+          favoriteCountries: [] as Country[],
+          loading: false,
+          errorMessage: '',
+        });
+      }
 
-  ngOnInit(): void {
-    this.loadFavoriteCountries();
-  }
-
-  loadFavoriteCountries(): void {
-    const favoriteCodes = this.favoriteService.getFavorites();
-
-    if (!favoriteCodes.length) {
-      this.favoriteCountries = [];
-      this.loading = false;
-      return;
-    }
-
-    this.countryService.getAllCountries().subscribe({
-      next: (countries) => {
-        this.favoriteCountries = countries.filter((country) =>
-          favoriteCodes.includes(country.cca3)
-        );
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMessage = 'Unable to load favorite countries.';
-        this.loading = false;
-      },
-    });
-  }
+      return this.countryService.getCountriesByCodes(favoriteCodes).pipe(
+        map((favoriteCountries) => ({
+          favoriteCountries,
+          loading: false,
+          errorMessage: '',
+        })),
+        startWith({
+          favoriteCountries: [] as Country[],
+          loading: true,
+          errorMessage: '',
+        }),
+        catchError(() =>
+          of({
+            favoriteCountries: [] as Country[],
+            loading: false,
+            errorMessage: 'Unable to load favorite countries.',
+          })
+        )
+      );
+    }),
+    shareReplay(1)
+  );
 }

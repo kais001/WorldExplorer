@@ -3,9 +3,7 @@
 } @else if (errorMessage) {
   <p class="error-message">{{ errorMessage }}</p>
 } @else if (country) {
-  <a class="back-link" routerLink="/">← Back to countries</a>
-
- 
+  <a class="back-link" routerLink="/">&#8592; Back to countries</a>
 
   <section class="detail-card">
     <img [src]="country.flags.svg || country.flags.png" [alt]="country.name.common" />
@@ -41,6 +39,9 @@
       <p>No bordering countries.</p>
     }
   </section>
+
 } @else {
   <p class="error-message">No country data available.</p>
 }
+
+<app-rxjs-playground></app-rxjs-playground>

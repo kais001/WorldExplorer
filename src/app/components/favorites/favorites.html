@@ -1,13 +1,18 @@
 <section class="favorites-section">
   <h2>Favorites</h2>
+  <p class="favorites-meta">
+    Live favorites with BehaviorSubject: {{ favoriteCount$ | async }}
+  </p>
 
-  @if (favoriteCountries.length > 0) {
-    <div class="favorites-grid">
-      @for (country of favoriteCountries; track country.cca3) {
-        <app-country-card [country]="country"></app-country-card>
-      }
-    </div>
-  } @else {
-    <p>No favorite countries yet.</p>
+  @if (favoriteCountries$ | async; as favoriteCountries) {
+    @if (favoriteCountries.length > 0) {
+      <div class="favorites-grid">
+        @for (country of favoriteCountries; track country.cca3) {
+          <app-country-card [country]="country"></app-country-card>
+        }
+      </div>
+    } @else {
+      <p>No favorite countries yet.</p>
+    }
   }
 </section>

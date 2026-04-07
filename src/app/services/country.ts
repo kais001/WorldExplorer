@@ -25,7 +25,7 @@ export class CountryService {
   searchByName(name: string): Observable<Country[]> {
     return this.http
       .get<Country[]>(
-        `${this.baseUrl}/name/${encodeURIComponent(name)}?fields=name,capital,region,population,flags,cca3,cca2,languages,currencies,borders,subregion,maps`
+        `${this.baseUrl}/name/${encodeURIComponent(name)}?fields=name,capital,region,population,flags,cca3`
       )
       .pipe(
         map((countries) =>
@@ -34,10 +34,20 @@ export class CountryService {
       );
   }
 
-  getCountryByCode(code: string): Observable<Country[]> {
-    return this.http.get<Country[]>(
-      `${this.baseUrl}/alpha/${encodeURIComponent(code)}?fields=name,capital,region,population,flags,cca3,cca2,languages,currencies,borders,subregion,maps`
-    );
+  getCountryByCode(code: string): Observable<Country | undefined> {
+    if (!code) {
+      return of(undefined);
+    }
+
+    return this.http
+      .get<Country | Country[]>(
+        `${this.baseUrl}/alpha/${encodeURIComponent(code)}?fields=name,capital,region,population,flags,cca3,languages,currencies,borders,subregion,maps`
+      )
+      .pipe(
+        map((response) =>
+          Array.isArray(response) ? response[0] : response
+        )
+      );
   }
 
   getCountriesByCodes(codes: string[]): Observable<Country[]> {

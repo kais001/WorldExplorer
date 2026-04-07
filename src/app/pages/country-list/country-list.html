@@ -35,23 +35,28 @@
     </div>
   </form>
 
-  <app-filter-bar (regionChange)="onRegionChanged($event)"></app-filter-bar>
+  <app-filter-bar
+    [selectedRegion]="selectedRegion"
+    (regionChange)="onRegionChanged($event)"
+  ></app-filter-bar>
 </section>
 
-@if (loading) {
-  <p class="info">Loading countries...</p>
-} @else if (errorMessage) {
-  <p class="info error">{{ errorMessage }}</p>
-} @else {
-  <p class="info">{{ filteredCountries.length }} countries found</p>
+<app-rxjs-playground></app-rxjs-playground>
 
-  <div class="countries-grid">
-    @for (country of filteredCountries; track country.cca3) {
-      <app-country-card [country]="country"></app-country-card>
-    } @empty {
-      <p>No countries match your filters.</p>
-    }
-  </div>
+@if (viewState$ | async; as vm) {
+  @if (vm.loading) {
+    <p class="info">Loading countries...</p>
+  } @else if (vm.errorMessage) {
+    <p class="info error">{{ vm.errorMessage }}</p>
+  } @else {
+    <div class="countries-grid">
+      @for (country of vm.filteredCountries; track country.cca3) {
+        <app-country-card [country]="country"></app-country-card>
+      } @empty {
+        <p>No countries match your filters.</p>
+      }
+    </div>
 
-  <app-favorites [countries]="countries"></app-favorites>
+    <app-favorites [countries]="vm.countries"></app-favorites>
+  }
 }
